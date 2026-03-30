@@ -546,6 +546,23 @@ section {
 }
 .enhance-card.steak .enhance-traits li::before { background: var(--red-meat); }
 .enhance-card.salad .enhance-traits li::before { background: var(--green-veg); }
+.enhance-detail {
+  font-size: 12px;
+  color: var(--text-light);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s, max-height 0.3s, margin 0.3s;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 16px;
+}
+.enhance-card:hover .enhance-detail {
+  opacity: 0.8;
+  max-height: 60px;
+  margin-top: 12px;
+}
 
 /* === EVOLUTION TIMELINE === */
 .timeline {
@@ -1114,7 +1131,7 @@ section.wipe-active .section-wipe {
   <div class="nav-logo">CUISINAULT</div>
   <div class="nav-links">
     <a href="#overview">개요</a>
-    <a href="#mechanic">메카닉</a>
+    <a href="#mechanic">메커니즘</a>
     <a href="#evolution">진화 과정</a>
     <a href="#decisions">설계 판단</a>
     <a href="#pipeline">AI 파이프라인</a>
@@ -1269,15 +1286,17 @@ section.wipe-active .section-wipe {
           <li>체력 회복 없음 — <strong>주의 깊은 조작 필요</strong></li>
           <li>별 3 조건(시간 내 클리어)에 유리</li>
         </ul>
+        <div class="enhance-detail">돌진 속도 1.5배 · 돌진 중 무적 · 종료 후 잔류 효과 없음</div>
       </div>
       <div class="enhance-card salad">
         <div class="enhance-type">Vegetable Recipe</div>
         <div class="enhance-name">샐러드 강화</div>
         <ul class="enhance-traits">
-          <li><strong>피격 대미지 감소</strong> + <strong>HP 지속 회복</strong></li>
+          <li><strong>피격 대미지 80% 감소</strong> + <strong>히트당 HP 2 회복</strong></li>
           <li>대미지 증가 없음 — <strong>클리어 속도가 느릴 수 있음</strong></li>
           <li>별 2 조건(체력 유지)에 유리</li>
         </ul>
+        <div class="enhance-detail">종료 후 10초간 매초 HP 1 리젠 · 돌진 중 무적</div>
       </div>
     </div>
     <p style="text-align: center; font-size: 14px; color: var(--text-light); margin-top: 20px; line-height: 1.7; max-width: 700px; margin-left: auto; margin-right: auto;">
@@ -1356,7 +1375,7 @@ section.wipe-active .section-wipe {
     <div class="timeline-item">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2025.12 — UE5 시도</div>
-      <div class="timeline-title">언리얼 엔진 5 도전과 포기</div>
+      <div class="timeline-title">언리얼 엔진 5 도전과 전환</div>
       <div class="timeline-text">
         UE5 Blueprint로 시작했으나,<br>
         Blueprint는 바이너리 파일이라<br>
