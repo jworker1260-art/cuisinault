@@ -1,16 +1,29 @@
-body { padding: 0; margin: 0 }
-#unity-container { position: absolute }
-#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
+/* Cuisinault 반응형 16:9 템플릿
+   원본: Unity Base/Default 템플릿의 style.css
+   변경점: 데스크톱에서 캔버스를 브라우저 창 크기에 맞춰 16:9로 확대하고,
+           남는 영역을 레터박스(검은 여백)로 둔다. 모바일 동작은 원본 유지. */
+
+html, body { padding: 0; margin: 0; width: 100%; height: 100%; overflow: hidden }
+body { background: #000 }
+
+#unity-container { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: #000 }
 #unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
-#unity-canvas { background: #231F20 }
-.unity-mobile #unity-canvas { width: 100%; height: 100% }
-#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
+
+/* 데스크톱: 크기·위치를 index.html의 fitCanvasToWindow()가 계산해 넣는다.
+   fullscreen API와 충돌하므로 transform은 쓰지 않는다. */
+#unity-canvas { position: absolute; background: #231F20; display: block }
+.unity-mobile #unity-canvas { position: static; width: 100%; height: 100% }
+#unity-canvas:fullscreen { left: 0; top: 0; width: 100%; height: 100% }
+
+#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; z-index: 2 }
 #unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
 #unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }
 #unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
-#unity-footer { position: relative }
+
+/* 푸터: 화면 하단 고정 바. 높이를 바꾸면 index.html의 FOOTER_HEIGHT도 같이 바꿀 것. */
+#unity-footer { position: fixed; left: 0; bottom: 0; width: 100%; height: 38px; background: #fff; z-index: 3 }
 .unity-mobile #unity-footer { display: none }
-#unity-logo-title-footer { float:left; width: 102px; height: 38px; background: url('unity-logo-title-footer.png') no-repeat center }
+#unity-logo-title-footer { float: left; width: 102px; height: 38px; background: url('unity-logo-title-footer.png') no-repeat center }
 #unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
-#unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
-#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+#unity-fullscreen-button { cursor: pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
+#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none; z-index: 4 }

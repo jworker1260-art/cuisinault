@@ -26,6 +26,15 @@
     <script>
       var canvas = document.querySelector("#unity-canvas");
 
+      // ─── Cuisinault 반응형 캔버스 설정 ────────────────────────────────
+      // 캔버스를 브라우저 창 크기에 맞춰 확대하되 화면비는 고정한다.
+      // 남는 영역은 레터박스(검은 여백)가 된다. 보는 사람의 모니터 해상도와
+      // 무관하게 동일한 화면 구도가 나오고, UI는 CanvasScaler가 비례 확대한다.
+      var ASPECT_WIDTH  = 16;   // 고정 화면비 - 가로
+      var ASPECT_HEIGHT = 9;    // 고정 화면비 - 세로
+      var FOOTER_HEIGHT = 38;   // 하단 바 높이. style.css의 #unity-footer height와 반드시 일치.
+      // ─────────────────────────────────────────────────────────────────
+
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -103,9 +112,40 @@
 
 
       } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
+        // Desktop style: 고정 픽셀 크기 대신 창 크기에 맞춰 16:9로 확대한다.
+        // (원본 템플릿은 여기서 canvas.style.width/height를 WIDTH/HEIGHT로 고정했다.)
+
+        // 전체화면 중에는 브라우저와 Unity가 캔버스를 직접 제어하므로 건드리지 않는다.
+        function isFullscreen() {
+          return !!(document.fullscreenElement || document.webkitFullscreenElement);
+        }
+
+        function fitCanvasToWindow() {
+          if (isFullscreen()) return;
+
+          var availWidth  = window.innerWidth;
+          var availHeight = window.innerHeight - FOOTER_HEIGHT;
+          if (availWidth <= 0 || availHeight <= 0) return;
+
+          // 가용 영역 안에 들어가는 가장 큰 16:9 사각형을 구한다.
+          var aspect = ASPECT_WIDTH / ASPECT_HEIGHT;
+          var width  = availWidth;
+          var height = Math.round(width / aspect);
+          if (height > availHeight) {
+            height = availHeight;
+            width  = Math.round(height * aspect);
+          }
+
+          canvas.style.width  = width + "px";
+          canvas.style.height = height + "px";
+          canvas.style.left   = Math.round((availWidth  - width)  / 2) + "px";
+          canvas.style.top    = Math.round((availHeight - height) / 2) + "px";
+        }
+
+        window.addEventListener("resize", fitCanvasToWindow);
+        document.addEventListener("fullscreenchange", fitCanvasToWindow);
+        document.addEventListener("webkitfullscreenchange", fitCanvasToWindow);
+        fitCanvasToWindow();
       }
 
       document.querySelector("#unity-loading-bar").style.display = "block";
