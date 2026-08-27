@@ -28,11 +28,13 @@
 
       // ─── Cuisinault 반응형 캔버스 설정 ────────────────────────────────
       // 캔버스를 브라우저 창 크기에 맞춰 확대하되 화면비는 고정한다.
-      // 남는 영역은 레터박스(검은 여백)가 된다. 보는 사람의 모니터 해상도와
-      // 무관하게 동일한 화면 구도가 나오고, UI는 CanvasScaler가 비례 확대한다.
+      // 남는 영역은 여백이 된다(색은 style.css의 body/#unity-container 배경).
+      // 보는 사람의 모니터 해상도와 무관하게 동일한 화면 구도가 나오고,
+      // UI는 CanvasScaler가 비례 확대한다.
       var ASPECT_WIDTH  = 16;   // 고정 화면비 - 가로
       var ASPECT_HEIGHT = 9;    // 고정 화면비 - 세로
       var FOOTER_HEIGHT = 38;   // 하단 바 높이. style.css의 #unity-footer height와 반드시 일치.
+      var MAX_WIDTH     = 1440; // 캔버스 최대 가로 폭(px). 창이 이보다 넓어도 더 커지지 않는다. 0이면 상한 없음.
       // ─────────────────────────────────────────────────────────────────
 
       // Shows a temporary message banner/ribbon for a few seconds, or
@@ -127,9 +129,11 @@
           var availHeight = window.innerHeight - FOOTER_HEIGHT;
           if (availWidth <= 0 || availHeight <= 0) return;
 
-          // 가용 영역 안에 들어가는 가장 큰 16:9 사각형을 구한다.
+          // 가용 영역 안에 들어가는 가장 큰 16:9 사각형을 구하되, MAX_WIDTH를 넘지 않는다.
+          // 큰 모니터에서 화면을 꽉 채워 부담스러워지는 것을 막는다. 상한에 걸리면 좌우 여백이 넓어질 뿐이다.
           var aspect = ASPECT_WIDTH / ASPECT_HEIGHT;
           var width  = availWidth;
+          if (MAX_WIDTH > 0 && width > MAX_WIDTH) width = MAX_WIDTH;
           var height = Math.round(width / aspect);
           if (height > availHeight) {
             height = availHeight;
